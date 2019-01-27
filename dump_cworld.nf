@@ -1,12 +1,3 @@
-/////////////////////////
-//
-// almost ready to do stuff
-// to be finished tomorrow ...
-//
-/////////////////////////
-
-
-
 files = Channel.fromPath('/pathpathpaht/output/coolers/library/*.cool')
 // "XXXX-YY-ZZZZ-S3-R1__galGal5.1000.cool"
 
@@ -34,14 +25,15 @@ files. \
 ////////////////////////////////////////////////////////
 
 process dump_cworld {
-    //executor 'lsf'
-    //cpus 2
-    //queue 'short'
-    //time { 45.m * task.attempt }
-    //maxForks 100
-    //errorStrategy 'retry'
-    //maxRetries 2
-    //memory '8 GB'
+    executor 'lsf'
+    cpus 2
+    queue 'short'
+    time { 45.m * task.attempt }
+    maxForks 100
+    errorStrategy 'retry'
+    maxRetries 2
+    memory '8 GB'
+    beforeScript 'source activate cooler-env'
     publishDir "./maaaatricy/$lib/$res"
 
     input:
@@ -53,9 +45,8 @@ process dump_cworld {
     script:
     """
     echo ${lib}.${res}.${chrom}.matrix
-    touch ${lib}.${res}.${chrom}.matrix
+    cooltools dump_cworld --region ${chrom} ${path} ${lib}.${res}.${chrom}.matrix
     """
-    //cooltools dump_cworld --region ${chrom} ${path} ${lib}.${res}.${chrom}.matrix
 
  }
 
